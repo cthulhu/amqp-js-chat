@@ -1,0 +1,3 @@
+[submodule "amqp-js"]
+	path = amqp-js
+	url = http://github.com/dansimpson/amqp-js.git
