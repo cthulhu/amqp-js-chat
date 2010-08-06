@@ -12,8 +12,8 @@
  	<script src="amqp-js/javascripts/mq.js" type="text/javascript"></script>
 	<script src="amqp-js/javascripts/swfobject.js" type="text/javascript"></script>
 	
-			<style type="text/css">
-			/*demo page css*/
+	<style type="text/css">
+		/*demo page css*/
 			body{ font: 62.5% "Trebuchet MS", sans-serif; margin: 50px;}
 			.demoHeaders { margin-top: 2em; }
 			#dialog_link {padding: .4em 1em .4em 20px;text-decoration: none;position: relative;}
@@ -22,80 +22,159 @@
 			ul#icons li {margin: 2px; position: relative; padding: 4px 0; cursor: pointer; float: left;  list-style: none;}
 			ul#icons span.ui-icon {float: left; margin: 0 4px;}
 			#message { width: 40%; margin-top: 30px; margin-right: 30px;}
-			#messages{
-			  width: 70%; height: 250pt; border: 1px solid rgb(85, 85, 85);
+			.chats{
+			  width: 90%; height: 270pt;
+		  }
+
+			.chat{
+        float:left;
+			  width: 30%; height: 250pt;
+		  }
+      .chat div{
+        width: 90%; height: 200pt; border: 1px solid rgb(85, 85, 85);
 		    font: 12pt "Trebuchet MS", sans-serif; overflow:auto;
-			  }
+      }
+      .messagenrs{
+        width: 90%; 
+      }
+      .messagenrs form {
+        float:left;
+        width:30%;
+      }
+      .messagenrs form #message {
+        width:90%;
+        margin-top: 10px; 
+        margin-bottom: 10px;
+        margin-left: 0; 
+        margin-right: 0;
+
+      }
 		</style>	
 
 	
 </head>
 
 <body>
-  <h1>Simple Chat</h1>
-  <div id="messages">
+  <div class="chats">
+    <div class="chat">
+      <h1>All games Messages</h1>
+      <div id="all_game_messages">
+      </div>
+    </div>
+    <div class="chat">
+      <h1>Game 1</h1>
+      <div id="game_1_messages">
+      </div>
+    </div>
+    <div class="chat">
+      <h1>Game 2</h1>
+      <div id="game_2_messages">
+      </div>
+    </div>
   </div>
-  <form id="target_messanger">
-    <input name="message" type="text" id="message" />
-    <input type="submit" value="Add Message" />
-  </form>
+  <div class="messagenrs">
+    <form id="target_messanger_all">
+      <lable> All games </lable> <br />
+      <textarea name="message" id="message" rows="5"> </textarea> <br />
+      <input type="submit" value="Add Message" /> <br />
+    </form>
+    <form id="target_messanger_game_1">
+      <lable> Game 1 </lable> <br />
+      <textarea name="message" id="message" rows="5"> </textarea> <br />
+      <input type="submit" value="Add Message" /> <br />
+    </form>
+    <form id="target_messanger_game_2">
+      <lable> Game 2 </lable> <br />
+      <textarea name="message" id="message" rows="5"> </textarea> <br />
+      <input type="submit" value="Add Message" /> <br />
+    </form>
+  </div>
+  <div style="clear:both;" />
 	<script type="text/javascript">
   	var message_id = 0;
 	  $(function(){
 	    
 	    MQ.configure({ host: "109.74.202.172" });
-	  	MQ.on("load", function() { console.log("Test");	});
-		  MQ.on("connect", function() {	
-		    $("#messages").append( 
-	    	  "<p style='margin:0px;'>" +
-	    	  "  Connected !!! " +
-	    	  "</p>"
-	    	);
-		  });
-	    MQ.on("disconnect", function() {		
-		    $("#messages").append( 
-	    	  "<p style='margin:0px;'>" +
-	    	  "  Disconnected !!! " +
-	    	  "</p>"
-	    	);
-	    });
+	  	MQ.on("load", function() { console.log("Load");	});
+		  MQ.on("connect", function(){ console.log("Connected !!!"); });
+	    MQ.on("disconnect", function(){ console.log("Disconnected !!!"); });
+	    MQ.queue("auto").callback(function(m){ alert("No Binding Matches"); });
 	
-	    MQ.queue("auto").callback(function(m) {		alert("No Binding Matches");	});
-	
-	    MQ.queue("auto").bind("simple_chat", "simple_chat").callback(function(m){
-	    	$("#messages").append( 
+	    MQ.queue("auto").bind("games", "game_*").callback(function(m){
+	    	$("#all_game_messages").append( 
 	    	  "<p style='margin:0px;' id='message_" + message_id + "''>" +
 	    	  " > " + m.data.value +
 	    	  "</p>"
 	    	);
-	    	$("div#messages").scrollTo("max");
-      	$("#message_" + message_id).effect("highlight", {}, 1000);
+	    	$("div#all_game_messages").scrollTo("max");
+      	$("#all_game_messages > #message_" + message_id).effect("highlight", {}, 1000);
 	    	message_id ++;
 	    });
 	
+
+	    MQ.queue("auto").bind("games", "game_1").callback(function(m){
+	    	$("#game_1_messages").append( 
+	    	  "<p style='margin:0px;' id='message_" + message_id + "''>" +
+	    	  " > " + m.data.value +
+	    	  "</p>"
+	    	);
+	    	$("div#game_1_messages").scrollTo("max");
+      	$("#game_1_messages > #message_" + message_id).effect("highlight", {}, 1000);
+	    	message_id ++;
+	    });
+
+	    MQ.queue("auto").bind("games", "game_2").callback(function(m){
+	    	$("#game_2_messages").append( 
+	    	  "<p style='margin:0px;' id='message_" + message_id + "''>" +
+	    	  " > " + m.data.value +
+	    	  "</p>"
+	    	);
+	    	$("div#game_2_messages").scrollTo("max");
+      	$("#game_2_messages > #message_" + message_id).effect("highlight", {}, 1000);
+	    	message_id ++;
+	    });
 	
-	swfobject.embedSWF(
-		"amqp-js/swfs/amqp.swf?" + Math.random().toString(),
-		"AMQPProxy",
-		"1", "1", "9", "amqp-js/swfs/expressInstall.swf",
-		{},
-		{ allowScriptAccess: "always", wmode: "opaque", bgcolor: "#ff0000" },
-		{},
-		function(){}
-	);
+
 	
-	$('#target_messanger').submit(function() {
-	  if( $("#message").val() != "" ){
-   	  MQ.exchange("simple_chat").publish({ value: $("#message").val() }, "simple_chat");
-   	  $("#message").val("");
-	  }
-    return false;
-  });
+	    swfobject.embedSWF(
+		    "amqp-js/swfs/amqp.swf?" + Math.random().toString(),
+		    "AMQPProxy",
+		    "1", "1", "9", "amqp-js/swfs/expressInstall.swf",
+		    {},
+		    { allowScriptAccess: "always", wmode: "opaque", bgcolor: "#ff0000" },
+		    {},
+		    function(){}
+	    );
+	
+	    $('#target_messanger_all').submit(function() {
+	      if( $("#target_messanger_all > #message").val() != "" ){
+       	  MQ.topic( "games" ).publish({ value: $("#target_messanger_all > #message").val() }, "game_*");
+       	  $("#target_messanger_all > #message").val("");
+	      }
+        return false;
+      });
+
+	    $('#target_messanger_game_1').submit(function() {
+	      if( $("#target_messanger_game_1 > #message").val() != "" ){
+       	  MQ.topic( "games" ).publish({ value: $("#target_messanger_game_1 > #message").val() }, "game_1");
+       	  $("#target_messanger_game_1 > #message").val("");
+	      }
+        return false;
+      });
+
+	    $('#target_messanger_game_2').submit(function() {
+	      if( $("#target_messanger_game_2 > #message").val() != "" ){
+       	  MQ.topic( "games" ).publish({ value: $("#target_messanger_game_2 > #message").val() }, "game_2");
+       	  $("#target_messanger_game_2 > #message").val("");
+	      }
+        return false;
+      });
+
 	
  	});
 	</script>
 	
-  <div id="amqp-wrap" style="position:absolute;z-index:10000;">
+  <div id="amqp-wrap">
 	  <div id="AMQPProxy">Loading AMQP Proxy</div>
   </div>
 
