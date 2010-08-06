@@ -100,7 +100,7 @@
 	    MQ.on("disconnect", function(){ console.log("Disconnected !!!"); });
 	    MQ.queue("auto").callback(function(m){ alert("No Binding Matches"); });
 	
-	    MQ.queue("auto").bind(MQ.topic( "games" ), "game_*").callback(function(m){
+	    MQ.queue("auto").bind("games", "game_*").callback(function(m){
 	    	$("#all_game_messages").append( 
 	    	  "<p style='margin:0px;' id='game_all_message_" + message_id + "''>" +
 	    	  " > " + m.data.value +
@@ -112,7 +112,7 @@
 	    });
 	
 
-	    MQ.queue("auto").bind(MQ.topic( "games" ), "game_1").callback(function(m){
+	    MQ.queue("auto").bind("games", "game_1").callback(function(m){
 	    	$("#game_1_messages").append( 
 	    	  "<p style='margin:0px;' id='game_1_message_" + message_id + "''>" +
 	    	  " > " + m.data.value +
@@ -123,7 +123,7 @@
 	    	message_id ++;
 	    });
 
-	    MQ.queue("auto").bind(MQ.topic( "games" ), "game_2").callback(function(m){
+	    MQ.queue("auto").bind(M"games", "game_2").callback(function(m){
 	    	$("#game_2_messages").append( 
 	    	  "<p style='margin:0px;' id='game_2_message_" + message_id + "''>" +
 	    	  " > " + m.data.value +
