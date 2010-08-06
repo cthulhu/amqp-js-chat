@@ -123,7 +123,7 @@
 	    	message_id ++;
 	    });
 
-	    MQ.queue("auto").bind(M"games", "game_2").callback(function(m){
+	    MQ.queue("auto").bind("games", "game_2").callback(function(m){
 	    	$("#game_2_messages").append( 
 	    	  "<p style='margin:0px;' id='game_2_message_" + message_id + "''>" +
 	    	  " > " + m.data.value +
