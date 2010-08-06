@@ -41,7 +41,7 @@
         float:left;
         width:30%;
       }
-      .messagenrs form #message {
+      .messagenrs form textarea {
         width:90%;
         margin-top: 10px; 
         margin-bottom: 10px;
@@ -75,17 +75,17 @@
   <div class="messagenrs">
     <form id="target_messanger_all">
       <lable> All games </lable> <br />
-      <textarea name="message" id="message" rows="5"> </textarea> <br />
+      <textarea name="message" id="message_all" rows="5"> </textarea> <br />
       <input type="submit" value="Add Message" /> <br />
     </form>
     <form id="target_messanger_game_1">
       <lable> Game 1 </lable> <br />
-      <textarea name="message" id="message" rows="5"> </textarea> <br />
+      <textarea name="message" id="message_1" rows="5"> </textarea> <br />
       <input type="submit" value="Add Message" /> <br />
     </form>
     <form id="target_messanger_game_2">
       <lable> Game 2 </lable> <br />
-      <textarea name="message" id="message" rows="5"> </textarea> <br />
+      <textarea name="message" id="message_2" rows="5"> </textarea> <br />
       <input type="submit" value="Add Message" /> <br />
     </form>
   </div>
@@ -102,35 +102,35 @@
 	
 	    MQ.queue("auto").bind("games", "game_*").callback(function(m){
 	    	$("#all_game_messages").append( 
-	    	  "<p style='margin:0px;' id='message_" + message_id + "''>" +
+	    	  "<p style='margin:0px;' id='game_all_message_" + message_id + "''>" +
 	    	  " > " + m.data.value +
 	    	  "</p>"
 	    	);
 	    	$("div#all_game_messages").scrollTo("max");
-      	$("#all_game_messages > #message_" + message_id).effect("highlight", {}, 1000);
+      	$("#game_all_message_" + message_id).effect("highlight", {}, 1000);
 	    	message_id ++;
 	    });
 	
 
 	    MQ.queue("auto").bind("games", "game_1").callback(function(m){
 	    	$("#game_1_messages").append( 
-	    	  "<p style='margin:0px;' id='message_" + message_id + "''>" +
+	    	  "<p style='margin:0px;' id='game_1_message_" + message_id + "''>" +
 	    	  " > " + m.data.value +
 	    	  "</p>"
 	    	);
 	    	$("div#game_1_messages").scrollTo("max");
-      	$("#game_1_messages > #message_" + message_id).effect("highlight", {}, 1000);
+      	$("#game_1_message_" + message_id).effect("highlight", {}, 1000);
 	    	message_id ++;
 	    });
 
 	    MQ.queue("auto").bind("games", "game_2").callback(function(m){
 	    	$("#game_2_messages").append( 
-	    	  "<p style='margin:0px;' id='message_" + message_id + "''>" +
+	    	  "<p style='margin:0px;' id='game_2_message_" + message_id + "''>" +
 	    	  " > " + m.data.value +
 	    	  "</p>"
 	    	);
 	    	$("div#game_2_messages").scrollTo("max");
-      	$("#game_2_messages > #message_" + message_id).effect("highlight", {}, 1000);
+      	$("#game_2_message_" + message_id).effect("highlight", {}, 1000);
 	    	message_id ++;
 	    });
 	
@@ -147,25 +147,25 @@
 	    );
 	
 	    $('#target_messanger_all').submit(function() {
-	      if( $("#target_messanger_all > #message").val() != "" ){
-       	  MQ.topic( "games" ).publish({ value: $("#target_messanger_all > #message").val() }, "game_*");
-       	  $("#target_messanger_all > #message").val("");
+	      if( $("#message_all").val() != "" ){
+       	  MQ.topic( "games" ).publish({ value: $("#message_all").val() }, "game_*");
+       	  $("#message_all").val("");
 	      }
         return false;
       });
 
 	    $('#target_messanger_game_1').submit(function() {
-	      if( $("#target_messanger_game_1 > #message").val() != "" ){
-       	  MQ.topic( "games" ).publish({ value: $("#target_messanger_game_1 > #message").val() }, "game_1");
-       	  $("#target_messanger_game_1 > #message").val("");
+	      if( $("#message_1").val() != "" ){
+       	  MQ.topic( "games" ).publish({ value: $("#message_1").val() }, "game_1");
+       	  $("#message_1").val("");
 	      }
         return false;
       });
 
 	    $('#target_messanger_game_2').submit(function() {
-	      if( $("#target_messanger_game_2 > #message").val() != "" ){
-       	  MQ.topic( "games" ).publish({ value: $("#target_messanger_game_2 > #message").val() }, "game_2");
-       	  $("#target_messanger_game_2 > #message").val("");
+	      if( $("#message_2").val() != "" ){
+       	  MQ.topic( "games" ).publish({ value: $("#message_2").val() }, "game_2");
+       	  $("#message_2").val("");
 	      }
         return false;
       });

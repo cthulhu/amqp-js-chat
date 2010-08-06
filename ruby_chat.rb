@@ -20,7 +20,7 @@ AMQP.start(:host => '109.74.202.172') do
   #exchange = MQ::Exchange.new(MQ.new, :fanout, 'simple_chat', :key => 'simple_chat')
   EM.add_periodic_timer( 10 ){
     ["game_1", "game_2"].each do |game|
-      exchange.publish( { "value" => "Game #{game} message" }.to_json, :key => game )
+      #exchange.publish( { "value" => "Game #{game} message" }.to_json, :key => game )
     end
   }
   
